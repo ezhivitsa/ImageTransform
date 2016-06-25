@@ -1,5 +1,5 @@
 {
-  "name": "image-tarnsform",
+  "name": "image-transform",
   "version": "1.0.0",
   "description": "Appication that dive the posibility transform image into hex codes with corresponding labels. ",
   "main": "src/main.js",
@@ -8,10 +8,20 @@
   },
   "author": "Evgeny Zhivitsa",
   "license": "ISC",
-  "devDependencies": {
-    "electron-prebuilt": "^0.35.0"
-  },
   "dependencies": {
-    "bootstrap": "^3.3.6"
+    "bootstrap": "^3.3.6",
+    "csv-write-stream": "^2.0.0",
+    "get-pixels": "^3.3.0",
+    "hex-rgb": "^1.0.0",
+    "jpeg-js": "^0.2.0",
+    "kefir": "^3.2.1",
+    "left-pad": "^1.1.0",
+    "punycode": "^2.0.0",
+    "ramda": "^0.21.0",
+    "rgb2hex": "^0.1.0",
+    "when": "^3.7.7"
+  },
+  "devDependencies": {
+    "electron-prebuilt": "^1.2.2"
   }
 }
