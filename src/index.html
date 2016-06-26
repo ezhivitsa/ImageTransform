@@ -3,25 +3,50 @@
 <head>
 	<meta charset="UTF-8">
 	<title>Image Transform</title>
-	<link rel="stylesheet" type="text/css" href="css/bootstrap.css">
-	<link rel="stylesheet" type="text/css" href="css/bootstrap-theme.css">
+	<link rel="stylesheet" type="text/css" href="../node_modules/bootstrap/dist/css/bootstrap.css">
+	<link rel="stylesheet" type="text/css" href="../node_modules/bootstrap/dist/css/bootstrap-theme.css">
 	<link rel="stylesheet" type="text/css" href="css/style.css">
 </head>
 <body>
 	<div class="container">
-		<h1>Appication</h1>
-		<form id="upload-form" enctype="multipart/form-data">
-			<div class="errors"></div>
-			<div class="form-group">
-				<label class="control-label" for="exampleInputFile">File input</label>
-				<input type="file" id="inputFile">
+		<div class="row">
+			<div class="col-md-1">
+				<h1>Application</h1>
+				<form id="upload-form" enctype="multipart/form-data">
+					<div class="errors"></div>
+					<div class="form-group">
+						<label class="control-label" for="exampleInputFile">File input</label>
+						<input type="file" id="inputFile">
+					</div>
+					<button type="submit" class="btn btn-default">Submit</button>
+				</form>
 			</div>
-			<button type="submit" class="btn btn-default">Submit</button>
-		</form>
+		</div>
+
+		<div class="row result-buttons">
+			<div class="col-md-1">
+				<button class="btn btn-primary show-preview" data-toggle="modal" data-target="#previewModal">Show preview</button>
+				<button class="btn btn-primary download-preview">Download preview</button>
+			</div>
+		</div>
 	</div>
 
 	<div class="overlay"></div>
 
+	<!-- Modal -->
+	<div class="modal fade" id="previewModal" tabindex="-1" role="dialog">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-body">
+					<img class="preview-image" src="result/result.jpg" />
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<script src="../node_modules/jquery/dist/jquery.min.js"></script>
+	<script>window.jQuery = window.$ = typeof module === 'object' ? module.exports : jQuery</script>
+	<script src="../node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
 	<script src="js/menu.js"></script>
 	<script src="js/app.js"></script>
 </body>

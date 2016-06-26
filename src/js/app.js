@@ -10,8 +10,9 @@ const Preview = require('./js/preview/preview')
 const errorTypes = require('./js/errors/errorTypes');
 const uploadEvents = require('./js/image/events');
 
-const form = document.querySelector('#upload-form');
-const overlay = document.querySelector('.overlay');
+const form = document.querySelector('#upload-form')
+const overlay = document.querySelector('.overlay')
+const downloadPreview = document.querySelector('.download-preview')
 
 const errorHandler = new ErrorHandler(form);
 const loadingHandler = new LoadingHandler(overlay);
@@ -75,6 +76,7 @@ let filesUpload = filesProperty.map(function (e) {
 	}
 }).flatMap();
 
+let preview = new Preview('./src/result/result.jpg')
 filesUpload.onValue(function (image) {
 	if ( image instanceof UploadedFile ) {
 		let properties = image.parse();
@@ -86,7 +88,7 @@ filesUpload.onValue(function (image) {
 		csvGenerator.generateCSV('./src/result/result.csv')
 
 		// generate preview jpg
-		let preview = new Preview(properties, './src/result/result.jpg')
+		preview.setProperties(properties)
 		preview.generate()
 		console.log('generated preview')
 
@@ -97,3 +99,8 @@ filesUpload.onValue(function (image) {
 filesUpload.onError(function (e) {
 	errorHandler.emit(e.type, e);
 });
+
+let previewStream = Kefir.fromEvents(downloadPreview, 'click')
+	.onValue(e => {
+		preview.download()
+	})

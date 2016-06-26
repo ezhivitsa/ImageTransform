@@ -6,8 +6,11 @@ let modernColorList = require('../colors/modernColorsList')
 
 class ImageGenerator {
 	constructor (properties, path) {
-		this.properties = properties
 		this.path = path
+	}
+
+	setProperties (properties) {
+		this.properties = properties
 
 		this.width = this.properties.shape[0]
 		this.height = this.properties.shape[1]
@@ -34,9 +37,11 @@ class ImageGenerator {
 			height: this.height
 		};
 		var jpegImageData = jpeg.encode(rawImageData, 50);
-    	fs.writeFile(this.path, jpegImageData.data, (err) => {
-    		console.log(err)
-    	});
+    	fs.writeFileSync(this.path, jpegImageData.data);
+	}
+
+	download () {
+
 	}
 }
 
