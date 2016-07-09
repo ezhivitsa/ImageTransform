@@ -10,7 +10,7 @@
   "license": "ISC",
   "dependencies": {
     "bootstrap": "^3.3.6",
-    "csv-write-stream": "^2.0.0",
+    "exceljs": "^0.2.9",
     "get-pixels": "^3.3.0",
     "hex-rgb": "^1.0.0",
     "jpeg-js": "^0.2.0",
@@ -23,6 +23,7 @@
     "when": "^3.7.7"
   },
   "devDependencies": {
-    "electron-prebuilt": "^1.2.2"
+    "electron-prebuilt": "^1.2.2",
+    "nodemon": "^1.9.2"
   }
 }

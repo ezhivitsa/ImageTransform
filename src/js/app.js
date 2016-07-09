@@ -13,6 +13,7 @@ const uploadEvents = require('./js/image/events');
 const form = document.querySelector('#upload-form')
 const overlay = document.querySelector('.overlay')
 const downloadPreview = document.querySelector('.download-preview')
+const downloadCSV = document.querySelector('.download-csv')
 
 const errorHandler = new ErrorHandler(form);
 const loadingHandler = new LoadingHandler(overlay);
@@ -77,15 +78,17 @@ let filesUpload = filesProperty.map(function (e) {
 }).flatMap();
 
 let preview = new Preview('./src/result/result.jpg')
+let csvGenerator = new CSV('./src/result/result.xlsx')
+
 filesUpload.onValue(function (image) {
 	if ( image instanceof UploadedFile ) {
 		let properties = image.parse();
 
-		let csvGenerator = new CSV(properties)
+		csvGenerator.setProperties(properties)
 		csvGenerator.getSymbols()
 		console.log('generated csv')
 
-		csvGenerator.generateCSV('./src/result/result.csv')
+		csvGenerator.generateCSV()
 
 		// generate preview jpg
 		preview.setProperties(properties)
@@ -100,7 +103,12 @@ filesUpload.onError(function (e) {
 	errorHandler.emit(e.type, e);
 });
 
-let previewStream = Kefir.fromEvents(downloadPreview, 'click')
+Kefir.fromEvents(downloadPreview, 'click')
 	.onValue(e => {
 		preview.download()
+	})
+
+Kefir.fromEvents(downloadCSV, 'click')
+	.onValue(e => {
+		csvGenerator.download()
 	})

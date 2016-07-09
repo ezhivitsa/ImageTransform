@@ -1,3 +1,7 @@
+body {
+	position: relative;
+}
+
 .result-buttons {
 	margin-top: 10px;
 }
@@ -36,4 +40,8 @@
 	max-height: 300px;
 	display: block;
 	margin: 0 auto;
+}
+
+.result-buttons .line {
+	margin-bottom: 15px;
 }

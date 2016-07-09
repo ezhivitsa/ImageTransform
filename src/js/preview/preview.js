@@ -1,11 +1,12 @@
 'use strict'
 let fs = require('fs')
-var jpeg = require('jpeg-js');
+let jpeg = require('jpeg-js');
+const {dialog} = require('electron').remote
 
 let modernColorList = require('../colors/modernColorsList')
 
 class ImageGenerator {
-	constructor (properties, path) {
+	constructor (path) {
 		this.path = path
 	}
 
@@ -41,7 +42,16 @@ class ImageGenerator {
 	}
 
 	download () {
+		let resultContent = fs.readFileSync(this.path)
 
+		dialog.showSaveDialog({
+			title: 'Preview image',
+			defaultPath: 'result.jpg'
+		}, (filePath) => {
+			fs.writeFile(filePath, resultContent, function (err) {
+		        if(err) console.error(err);
+		    });
+		})
 	}
 }
 
