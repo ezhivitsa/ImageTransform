@@ -13,13 +13,20 @@ let modernColorList = require('../colors/modernColorsList')
 */
 let getLetterByNumber = (number) => {
 	let letters = []
-	let num = number + 1
-	while (num > 0) {
-		let n = number % 26
-		letters.push(n)
-		num = Math.floor(number / 26)
+	let num = number
+	if (num >= 26) {
+		while (num >= 26) {
+			let n = num % 26
+			letters.push(n)
+			num = Math.floor(num / 26)
+		}
+		if (num > 0) {
+			letters.push(num - 1)
+		}
+	} else {
+		letters.push(num)
 	}
-	letters = letters.reverse().map(num => String.fromCharCode(num + 64))
+	letters = letters.reverse().map(num => String.fromCharCode(num + 65))
 	return letters.join('')
 }
 
@@ -94,7 +101,7 @@ class CSVGenerator {
 			let color = modernColorList[colorNum]
 			len += 6
 
-			let column = getLetterByNumber(len - 5)
+			let column = getLetterByNumber(len - 6)
 			let hex = rgb2hex(`rgb(${color.r},${color.g},${color.b})`).hex.slice(1).toUpperCase()
 
 			if (color.r < 150 && color.g < 150 && color.b < 150) {
@@ -114,7 +121,7 @@ class CSVGenerator {
 				rowNumber += 1
 			}
 		})
-		rowNumber += 1
+		rowNumber += 2
 
 		for (let i = 0; i < height; i += 1) {
 			let csvLine = []
@@ -128,10 +135,102 @@ class CSVGenerator {
 			sheet.addRow(csvLine)
 		}
 
+		for (let i = 0; i < height; i += 1) {
+			for (let j = 0; j < width; j += 1) {
+				let hex = this.properties.hex[i*width + j]
+				let colorNum = this.properties.colorNames[hex]
+				let color = modernColorList[colorNum]
+
+				let column = getLetterByNumber(j)
+				let hexColor = rgb2hex(`rgb(${color.r},${color.g},${color.b})`).hex.slice(1).toUpperCase()
+
+				sheet.getCell(`${column}${rowNumber}`).fill = {
+					type: 'pattern',
+					pattern: 'solid',
+					fgColor: {argb: `FF${hexColor}` }
+				}
+
+				if (color.r < 150 && color.g < 150 && color.b < 150) {
+					sheet.getCell(`${column}${rowNumber}`).font = {
+						color: { argb: 'FFFFFFFF' }
+					}
+				}
+
+				let top = this.getTopColor(width, height, i, j)
+				let right = this.getRightColor(width, height, i, j)
+				let left = this.getLeftColor(width, height, i, j)
+				let bottom = this.getBottomColor(width, height, i, j)
+				
+				let border = {}
+				if (!top || top !== color) {
+					border.top = { style:'thin' }
+				}
+				if (!right || right !== color) {
+					border.right = { style:'thin' }
+				}
+				if (!bottom || bottom !== color) {
+					border.bottom = {style:'thin'}
+				}
+				if (!left || left !== color) {
+					border.left = {style:'thin'}
+				}
+
+				sheet.getCell(`${column}${rowNumber}`).border = border
+
+				if (`${column}${rowNumber}` === 'C102') {
+					console.log(color, hexColor, border)
+				}
+				if (`${column}${rowNumber}` === 'C103') {
+					console.log(color, hexColor, border)
+				}
+			}
+
+			rowNumber += 1
+		}
+
 		workbook.xlsx.writeFile(this.path)
 		    .then(function() {
 		        console.log('xlsx writed')
 		    });
+	}
+
+	getTopColor (width, height, i, j) {
+		if (i <= 0) {
+			return null
+		} else {
+			return this.getColor(width, i - 1, j)
+		}
+	}
+
+	getBottomColor (width, height, i, j) {
+		if (i >= height - 1) {
+			return null
+		} else {
+			return this.getColor(width, i + 1, j)
+		}
+	}
+
+	getLeftColor (width, height, i, j) {
+		if (j <= 0) {
+			return null
+		} else {
+			return this.getColor(width, i, j - 1)
+		}
+	}
+
+	getRightColor (width, height, i, j) {
+		if (j >= width - 1) {
+			return null
+		} else {
+			return this.getColor(width, i, j + 1)
+		}
+	}
+
+	getColor (width, i, j) {
+		let hex = this.properties.hex[i*width + j]
+		let colorNum = this.properties.colorNames[hex]
+		let color = modernColorList[colorNum]
+		return color	
 	}
 
 	download () {
