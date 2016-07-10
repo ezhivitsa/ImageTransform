@@ -176,13 +176,6 @@ class CSVGenerator {
 				}
 
 				sheet.getCell(`${column}${rowNumber}`).border = border
-
-				if (`${column}${rowNumber}` === 'C102') {
-					console.log(color, hexColor, border)
-				}
-				if (`${column}${rowNumber}` === 'C103') {
-					console.log(color, hexColor, border)
-				}
 			}
 
 			rowNumber += 1

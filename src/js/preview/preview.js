@@ -2,6 +2,9 @@
 let fs = require('fs')
 let jpeg = require('jpeg-js');
 const {dialog} = require('electron').remote
+const base64 = require('base64-arraybuffer')
+
+let previewImage = document.querySelector('.preview-image')
 
 let modernColorList = require('../colors/modernColorsList')
 
@@ -38,7 +41,9 @@ class ImageGenerator {
 			height: this.height
 		};
 		var jpegImageData = jpeg.encode(rawImageData, 50);
+		
     	fs.writeFileSync(this.path, jpegImageData.data);
+    	this.setImage(jpegImageData.data)
 	}
 
 	download () {
@@ -52,6 +57,11 @@ class ImageGenerator {
 		        if(err) console.error(err);
 		    });
 		})
+	}
+
+	setImage (data) {
+		let baseString = `data:image/jpg;base64,${base64.encode(data)}`
+		previewImage.src = baseString
 	}
 }
 

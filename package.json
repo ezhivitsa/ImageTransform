@@ -9,6 +9,7 @@
   "author": "Evgeny Zhivitsa",
   "license": "ISC",
   "dependencies": {
+    "base64-arraybuffer": "^0.1.5",
     "bootstrap": "^3.3.6",
     "exceljs": "^0.2.9",
     "get-pixels": "^3.3.0",
